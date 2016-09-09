@@ -8,7 +8,8 @@ using System.Windows;
 using ArgipApiWpfConsume.Models;
 using ArgipApiWpfConsume.Services;
 using System.Web;
-
+using System.Windows.Input;
+using System.Threading.Tasks;
 
 namespace ArgipApiWpfConsume.ViewModels
 {
@@ -257,7 +258,17 @@ namespace ArgipApiWpfConsume.ViewModels
             IsBusy = false;
         }
 
-        public async void FilterData()
+        public async void DoFilterData(ActionExecutionContext context)
+        {
+            var keyArgs = context.EventArgs as KeyEventArgs;
+            if (keyArgs != null && keyArgs.Key == Key.Enter)
+            {
+                await FilterData();
+            }
+
+        }
+
+        public async Task FilterData()
         {
             IsBusy = true;
             

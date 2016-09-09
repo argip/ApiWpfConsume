@@ -4,6 +4,8 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:ArgipApiWpfConsume"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cal="http://www.caliburnproject.org" 
 		mc:Ignorable="d"
 		Title="MainWindow" Height="492.857" Width="840.587">
     <Window.Resources>
@@ -29,7 +31,15 @@
             <TabItem Header="Searching data">
                 <DockPanel>
                     <StackPanel Orientation="Horizontal"  Margin="5" DockPanel.Dock="Top">
-                        <TextBox x:Name="FilterText" Width="300" FontSize="20" Padding="5"/>
+                        <TextBox x:Name="FilterText" Width="300" FontSize="20" Padding="5">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="KeyDown">
+                                    <cal:ActionMessage MethodName="DoFilterData">
+                                        <cal:Parameter Value="$executionContext"/>
+                                    </cal:ActionMessage>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
                         <Button x:Name="FilterData" Content="Filter data" FontSize="20" Margin="5,0,0,0" Padding="5"/>
                         <Button x:Name="NextPage" Content="Next page" FontSize="20" Margin="5,0,0,0" Padding="5"/>
                         <Label x:Name="TotalRecords" FontSize="20" Margin="5,0,0,0" Padding="5"></Label>
@@ -52,6 +62,10 @@
                                         <WrapPanel>
                                         <Label Content="Product ID:" FontSize="8"></Label>
                                         <Label Content="{Binding ProductId}" FontSize="8"></Label>
+                                        </WrapPanel>
+                                        <WrapPanel>
+                                            <Label Content="Your custom index:" FontSize="8"></Label>
+                                            <Label Content="{Binding YourIndex}" FontSize="8"></Label>
                                         </WrapPanel>
                                         <Label Content="Your Price:" FontSize="8" Padding="5,0,0,0"></Label>
                                         <WrapPanel>
