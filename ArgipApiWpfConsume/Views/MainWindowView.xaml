@@ -47,14 +47,18 @@
                     <ListBox x:Name="ProductList" HorizontalContentAlignment="Stretch" DockPanel.Dock="Bottom">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid Background="LightGray">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="180"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Margin="5">
                                     <Border Margin="5" BorderBrush="Black" BorderThickness="1">
                                         <Image Source="{Binding Path=PictureUrl}" Stretch="Fill"/>
                                     </Border>
+                                        <Label Content="Stock Info" FontSize="8"></Label>
+                                        <TextBlock Style="{StaticResource txtStockInfo}" FontSize="20" FontWeight="Bold" Padding="0"/>
+                                    </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="5" Background="LightGray">
                                         <StackPanel Orientation="Horizontal" TextBlock.FontWeight="Bold" >
                                             <TextBlock Text="{Binding ProductFullName}" FontSize="16" />
@@ -67,13 +71,29 @@
                                             <Label Content="Your custom index:" FontSize="8"></Label>
                                             <Label Content="{Binding YourIndex}" FontSize="8"></Label>
                                         </WrapPanel>
-                                        <Label Content="Your Price:" FontSize="8" Padding="5,0,0,0"></Label>
                                         <WrapPanel>
-                                        <TextBlock Text="{Binding YourMainPrice}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
-                                            <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+                                            <StackPanel Margin="0,0,20,0">
+                                                <Label Content="Your Main Price:" FontSize="8" Padding="5,0,0,0"></Label>
+                                                <WrapPanel>
+                                                    <TextBlock Text="{Binding YourMainPrice}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+                                                    <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,20,0">
+                                                <Label Content="Price Level 1:" FontSize="8" Padding="5,0,0,0"></Label>
+                                                <WrapPanel>
+                                                    <TextBlock Text="{Binding YourPriceLevel1}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+                                                    <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                            <StackPanel Margin="0,0,20,0">
+                                                <Label Content="Price Level 2:" FontSize="8" Padding="5,0,0,0"></Label>
+                                                <WrapPanel>
+                                                    <TextBlock Text="{Binding YourPriceLevel2}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+                                                    <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+                                                </WrapPanel>
+                                            </StackPanel>                                            
                                         </WrapPanel>
-                                        <Label Content="Stock Info" FontSize="8" Padding="0,0,0,0" HorizontalAlignment="Right"></Label>
-                                        <TextBlock Style="{StaticResource txtStockInfo}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right"/>                                        
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>
