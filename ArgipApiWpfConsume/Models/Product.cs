@@ -19,8 +19,8 @@ namespace ArgipApiWpfConsume.Models
         public decimal QuantityLimitLevel2 { get; set; }
         public string PictureUrl { get; set; }
         public decimal YourMainPrice { get; set; }
-        public decimal YourPriceLevel1 { get; set; }
-        public decimal YourPriceLevel2 { get; set; }
+        public int YourPriceLevel1 { get; set; }
+        public int YourPriceLevel2 { get; set; }
         public int CurrencyId { get; set; }
         public string CurrencyName { get; set; }
         public int PiecesInStock { get; set; }
