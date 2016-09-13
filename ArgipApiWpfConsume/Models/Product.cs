@@ -33,6 +33,9 @@ namespace ArgipApiWpfConsume.Models
         public decimal BoxWeight { get; set; }
         public decimal TaxRate { get; set; }
         public List<TagModel> Tags { get; set; }
+
+        public string QuantityLimitLevel1String { get { return string.Format("For {0} pcs", (int)(QuantityLimitLevel1 * 100)); } }
+        public string QuantityLimitLevel2String { get { return string.Format("For {0} pcs", (int)(QuantityLimitLevel2 * 100)); } }
     }
 
     public class TagModel
