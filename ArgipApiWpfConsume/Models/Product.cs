@@ -15,12 +15,12 @@ namespace ArgipApiWpfConsume.Models
         public string MultiPackEanBarcode { get; set; }
         public int SinglePackQuantityInPieces { get; set; }
         public int MultiPackQuantityInPieces { get; set; }
-        public decimal QuantityLimitLevel1 { get; set; }
-        public decimal QuantityLimitLevel2 { get; set; }
+        public int QuantityLimitLevel1 { get; set; }
+        public int QuantityLimitLevel2 { get; set; }
         public string PictureUrl { get; set; }
         public decimal YourMainPrice { get; set; }
-        public int YourPriceLevel1 { get; set; }
-        public int YourPriceLevel2 { get; set; }
+        public decimal YourPriceLevel1 { get; set; }
+        public decimal YourPriceLevel2 { get; set; }
         public int CurrencyId { get; set; }
         public string CurrencyName { get; set; }
         public int PiecesInStock { get; set; }
@@ -34,8 +34,8 @@ namespace ArgipApiWpfConsume.Models
         public decimal TaxRate { get; set; }
         public List<TagModel> Tags { get; set; }
 
-        public string QuantityLimitLevel1String { get { return string.Format("For {0} pcs", (int)(QuantityLimitLevel1 * 100)); } }
-        public string QuantityLimitLevel2String { get { return string.Format("For {0} pcs", (int)(QuantityLimitLevel2 * 100)); } }
+        public string QuantityLimitLevel1String { get { return string.Format("For {0} pcs", QuantityLimitLevel1); } }
+        public string QuantityLimitLevel2String { get { return string.Format("For {0} pcs", QuantityLimitLevel2); } }
     }
 
     public class TagModel
