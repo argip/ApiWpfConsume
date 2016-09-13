@@ -72,27 +72,35 @@
                                             <Label Content="{Binding YourIndex}" FontSize="8"></Label>
                                         </WrapPanel>
                                         <WrapPanel>
-                                            <StackPanel Margin="0,0,20,0">
+                                            <Border Padding="5" BorderBrush="SteelBlue" BorderThickness="1" Margin="0,0,20,0">
+                                            <StackPanel Width="120">
                                                 <Label Content="Your Main Price:" FontSize="8" Padding="5,0,0,0"></Label>
                                                 <WrapPanel>
                                                     <TextBlock Text="{Binding YourMainPrice}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
                                                     <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
                                                 </WrapPanel>
                                             </StackPanel>
-                                            <StackPanel Margin="0,0,20,0">
-                                                <Label Content="Price Level 1:" FontSize="8" Padding="5,0,0,0"></Label>
-                                                <WrapPanel>
-                                                    <TextBlock Text="{Binding YourPriceLevel1}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
-                                                    <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
-                                                </WrapPanel>
-                                            </StackPanel>
-                                            <StackPanel Margin="0,0,20,0">
-                                                <Label Content="Price Level 2:" FontSize="8" Padding="5,0,0,0"></Label>
-                                                <WrapPanel>
-                                                    <TextBlock Text="{Binding YourPriceLevel2}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
-                                                    <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
-                                                </WrapPanel>
-                                            </StackPanel>                                            
+                                            </Border>
+                                            <Border Padding="5" BorderBrush="#FFB4A546" BorderThickness="1" Margin="0,0,20,0">
+                                                <StackPanel Width="120">
+                                                    <Label Content="Price Level 1:" FontSize="8" Padding="5,0,0,0"></Label>
+                                                    <WrapPanel>
+                                                        <TextBlock Text="{Binding YourPriceLevel1}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+                                                    </WrapPanel>
+                                                    <TextBlock Text="{Binding QuantityLimitLevel1String}" FontSize="8" />
+                                                </StackPanel>
+                                            </Border>
+                                            <Border Padding="5" BorderBrush="#FF50B446" BorderThickness="1" Margin="0,0,20,0">
+                                                <StackPanel Width="120">
+                                                    <Label Content="Price Level 2:" FontSize="8" Padding="5,0,0,0"></Label>
+                                                    <WrapPanel>
+                                                        <TextBlock Text="{Binding YourPriceLevel2}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+                                                        <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+                                                    </WrapPanel>
+                                                    <TextBlock Text="{Binding QuantityLimitLevel2String}" FontSize="8" />
+                                                </StackPanel>
+                                            </Border>
                                         </WrapPanel>
                                     </StackPanel>
                                 </Grid>
