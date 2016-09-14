@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using ArgipApiWpfConsume.Models;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,22 +10,38 @@ namespace ArgipApiWpfConsume.ViewModels
 {
     public class DialogViewModel : Conductor<object>
     {
+        private readonly Product product;
+        int byquantity;
+        int bypackages;
 
-        public DialogViewModel()
+        public DialogViewModel(Product product)
         {
-            Buttons = new BindableCollection<int>(Enumerable.Range(1, 3));
+            this.product = product;
+            ByPackages = 1;
+            ByQuantity = product.SinglePackQuantityInPieces;
         }
 
-        public void SomeAction()
+
+        public int ByQuantity
         {
-            Debug.Print("SomeAction called");
+            get { return byquantity; }
+            set
+            {
+                byquantity = value;
+                NotifyOfPropertyChange(() => ByQuantity);
+            }
         }
 
-        public void SomeActionWithParameter(int value)
+        public int ByPackages
         {
-            Debug.Print("SomeActionWithParameter called through bubbling with value={0}", value);
+            get { return bypackages; }
+            set
+            {
+                bypackages = value;
+                NotifyOfPropertyChange(() => ByPackages);
+            }
         }
 
-        public BindableCollection<int> Buttons { get; private set; }
+        //public BindableCollection<int> Buttons { get; private set; }
     }
 }

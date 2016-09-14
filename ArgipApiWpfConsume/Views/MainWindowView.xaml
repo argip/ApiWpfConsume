@@ -134,6 +134,9 @@
                                                 <TextBlock Text="{Binding OtherPossibleQuantity, StringFormat={}{0} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
                                             </StackPanel>
                                         </WrapPanel>
+                                        <StackPanel Orientation="Horizontal"  Margin="5">
+                                            <Button HorizontalAlignment="Right" Content="Add to cart" cal:Message.Attach="AddToCart($dataContext)" ></Button>
+                                        </StackPanel>
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>

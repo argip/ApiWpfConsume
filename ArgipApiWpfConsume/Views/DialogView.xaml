@@ -5,19 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArgipApiWpfConsume"
         mc:Ignorable="d"
-        Title="DialogView" Height="300" Width="300">
+        Title="Quantity dialog" Height="300" Width="300" WindowStartupLocation="CenterOwner">
     <Grid>
-        <StackPanel>
-            <TextBlock FontSize="20">This is the default MODAL dialog view.</TextBlock>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Width="150">ByQuantity</Label>
+                <TextBox x:Name="ByQuantity" Width="100"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Width="150">bbbbb</Label>
+                <TextBox x:Name="ByPackages" Width="100"/>
+            </StackPanel>
 
-            <ItemsControl Name="Buttons">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Margin="10" 
-							Content="{Binding}"></Button>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
         </StackPanel>
     </Grid>
 </Window>

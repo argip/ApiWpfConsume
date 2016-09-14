@@ -323,19 +323,22 @@ namespace ArgipApiWpfConsume.ViewModels
             NotifyOfPropertyChange(() => ProductList);
         }
 
-
+        public void AddToCart(Product product)
+        {
+            var result = windowManager.ShowDialog(new DialogViewModel(product));
+        }
         //public void OpenModal()
         //{
-        //    var result = windowManager.ShowDialog(new DialogViewModel());
+        //    var result = windowManager.ShowDialog(new DialogViewModel(10));
         //}
 
         //public void OpenPopup()
         //{
-        //dynamic settings = new ExpandoObject();
-        //settings.Placement = PlacementMode.Center;
-        //settings.PlacementTarget = GetView(null);
+        //    dynamic settings = new System.Dynamic.ExpandoObject();
+        //    settings.Var1 = "aaaaa";
+        //    //settings.PlacementTarget = GetView(null);
 
-        //windowManager.ShowPopup(new DialogViewModel(), "Popup", settings);
+        //    windowManager.ShowPopup(new DialogViewModel(), "Popup", settings);
         //}
     }
 }
