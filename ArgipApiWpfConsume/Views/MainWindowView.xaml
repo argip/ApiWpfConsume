@@ -11,14 +11,30 @@
     <Window.Resources>
         <Style x:Key="txtStockInfo" TargetType="TextBlock">
             <Setter Property="Foreground" Value="Green"/>
-            <Setter Property="Text" Value="{Binding Path=PiecesInStock, StringFormat={}{0} PCS}"/>
+            <Setter Property="Text" Value="{Binding Path=PiecesInStock, StringFormat={}{0:# ###} PCS}"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=PiecesInStock}" Value="0">
                     <Setter Property="Foreground" Value="Red"/>
                     <Setter Property="Text" Value="OUT OF STOCK"/>
                 </DataTrigger>
             </Style.Triggers>
-        </Style>        
+        </Style>
+        <Style x:Key="brdPriceInfo1" TargetType="Border">
+            <Setter Property="Visibility" Value="Visible"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=QuantityLimitLevel1}" Value="0">
+                    <Setter Property="Visibility" Value="Hidden"></Setter>
+                </DataTrigger>
+            </Style.Triggers>            
+        </Style>
+        <Style x:Key="brdPriceInfo2" TargetType="Border">
+            <Setter Property="Visibility" Value="Visible"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=QuantityLimitLevel2}" Value="0">
+                    <Setter Property="Visibility" Value="Hidden"></Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
         <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Background="LightGray">
@@ -56,8 +72,10 @@
                                     <Border Margin="5" BorderBrush="Black" BorderThickness="1">
                                         <Image Source="{Binding Path=PictureUrl}" Stretch="Fill"/>
                                     </Border>
-                                        <Label Content="Stock Info" FontSize="8"></Label>
+                                        <StackPanel Margin="5">
+                                        <TextBlock Text="Stock Info" FontSize="8"></TextBlock>
                                         <TextBlock Style="{StaticResource txtStockInfo}" FontSize="20" FontWeight="Bold" Padding="0"/>
+                                        </StackPanel>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1" Margin="5" Background="LightGray">
                                         <StackPanel Orientation="Horizontal" TextBlock.FontWeight="Bold" >
@@ -74,33 +92,47 @@
                                         <WrapPanel>
                                             <Border Padding="5" BorderBrush="SteelBlue" BorderThickness="1" Margin="0,0,20,0">
                                             <StackPanel Width="120">
-                                                <Label Content="Your Main Price:" FontSize="8" Padding="5,0,0,0"></Label>
+                                                <Label Content="Main Price:" FontSize="8" Padding="5,0,0,0"></Label>
                                                 <WrapPanel>
                                                     <TextBlock Text="{Binding YourMainPrice}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
                                                     <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
                                                 </WrapPanel>
                                             </StackPanel>
                                             </Border>
-                                            <Border Padding="5" BorderBrush="#FFB4A546" BorderThickness="1" Margin="0,0,20,0">
+                                            <Border Padding="5" BorderBrush="#FFB4A546" BorderThickness="1" Margin="0,0,20,0" Style="{StaticResource brdPriceInfo1}">
                                                 <StackPanel Width="120">
                                                     <Label Content="Price Level 1:" FontSize="8" Padding="5,0,0,0"></Label>
                                                     <WrapPanel>
                                                         <TextBlock Text="{Binding YourPriceLevel1}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
                                                         <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
                                                     </WrapPanel>
-                                                    <TextBlock Text="{Binding QuantityLimitLevel1String}" FontSize="8" />
+                                                    <TextBlock Text="{Binding QuantityLimitLevel1, StringFormat={}For {0} PCS}" FontSize="8" />
                                                 </StackPanel>
                                             </Border>
-                                            <Border Padding="5" BorderBrush="#FF50B446" BorderThickness="1" Margin="0,0,20,0">
+                                            <Border Padding="5" BorderBrush="#FF50B446" BorderThickness="1" Margin="0,0,20,0" Style="{StaticResource brdPriceInfo2}">
                                                 <StackPanel Width="120">
                                                     <Label Content="Price Level 2:" FontSize="8" Padding="5,0,0,0"></Label>
                                                     <WrapPanel>
                                                         <TextBlock Text="{Binding YourPriceLevel2}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
                                                         <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
                                                     </WrapPanel>
-                                                    <TextBlock Text="{Binding QuantityLimitLevel2String}" FontSize="8" />
+                                                    <TextBlock Text="{Binding QuantityLimitLevel2, StringFormat={}For {0} PCS}" FontSize="8" />
                                                 </StackPanel>
                                             </Border>
+                                        </WrapPanel>
+                                        <WrapPanel>
+                                            <StackPanel Width="100" Margin="5">
+                                                <TextBlock Text="Box quantity" FontSize="8"></TextBlock>
+                                                <TextBlock Text="{Binding SinglePackQuantityInPieces, StringFormat={}{0} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
+                                            </StackPanel>
+                                            <StackPanel Width="100" Margin="5">
+                                                <TextBlock Text="Box weight" FontSize="8"></TextBlock>
+                                                <TextBlock Text="{Binding BoxWeight, StringFormat={}{0:N2} kg}" FontSize="12" FontWeight="Bold" Padding="0"/>
+                                            </StackPanel>
+                                            <StackPanel Width="100" Margin="5">
+                                                <TextBlock Text="Other possible quantity" FontSize="8"></TextBlock>
+                                                <TextBlock Text="{Binding OtherPossibleQuantity, StringFormat={}{0} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
+                                            </StackPanel>
                                         </WrapPanel>
                                     </StackPanel>
                                 </Grid>
