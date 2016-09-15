@@ -135,7 +135,7 @@
                                             </StackPanel>
                                         </WrapPanel>
                                         <StackPanel Orientation="Horizontal"  Margin="5">
-                                            <Button HorizontalAlignment="Right" Content="Add to cart" cal:Message.Attach="AddToCart($dataContext)" ></Button>
+                                            <Button HorizontalAlignment="Right" Content="Add to cart" cal:Message.Attach="AddToCart($dataContext)" Padding="5,1" ></Button>
                                         </StackPanel>
                                     </StackPanel>
                                 </Grid>

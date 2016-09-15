@@ -9,14 +9,26 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Width="150">ByQuantity</Label>
-                <TextBox x:Name="ByQuantity" Width="100"/>
+                <Label Width="150">Quantity you need</Label>
+                <TextBox x:Name="QuantityYouNeed" Margin="0,5,0,5" Width="80"/>
+                <Label>pcs</Label>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Width="150">bbbbb</Label>
-                <TextBox x:Name="ByPackages" Width="100"/>
+                <Label Width="150">Quantity you receive</Label>
+                <TextBox x:Name="QuantityYouReceive" Margin="0,5,0,5" Width="80" IsReadOnly="True" Background="LightGray"/>
+                <Label>pcs</Label>
             </StackPanel>
-
+            <StackPanel Orientation="Horizontal">
+                <Label Width="150">Boxes you receive</Label>
+                <TextBox x:Name="BoxesYouReceive" x:FieldModifier="private" Margin="0,5,0,5" Width="80" Text="0" />
+                <Button x:Name="BoxesUp" x:FieldModifier="private" Margin="5,5,0,5" Content="˄" Width="20" />
+                <Button x:Name="BoxesDown" x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="20" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Width="150">Weight</Label>
+                <TextBlock x:Name="WeightSum" Margin="0,5,0,5" />
+                <Label> kg</Label>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
