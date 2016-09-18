@@ -10,6 +10,7 @@ using ArgipApiWpfConsume.Services;
 using System.Web;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using System.Dynamic;
 
 namespace ArgipApiWpfConsume.ViewModels
 {
@@ -19,6 +20,7 @@ namespace ArgipApiWpfConsume.ViewModels
         readonly IArgipApiData argipApiData;
         readonly ISettingsData settingsData;
         readonly AccessTokenService accessTokenService;
+        readonly CartHolder cartHolder;
 
         //settings
         string audience;
@@ -36,6 +38,7 @@ namespace ArgipApiWpfConsume.ViewModels
         int productidforupdate;
         bool isbusy = false;
         string nextpageurl = "";
+        string windowTitle = "Api demo app...";
 
         public BindableCollection<Product> ProductList
         {
@@ -47,13 +50,23 @@ namespace ArgipApiWpfConsume.ViewModels
             get { return string.Format("{0} records", ProductList.Count); }
         }
 
-        public MainWindowViewModel(IWindowManager windowManager, IArgipApiData argipApiData, ISettingsData settingsData, AccessTokenService accessTokenService)
+        public string WindowTitle
+        {
+            get { return windowTitle; }
+        }
+
+        public MainWindowViewModel(
+            IWindowManager windowManager, 
+            IArgipApiData argipApiData, 
+            ISettingsData settingsData, 
+            AccessTokenService accessTokenService,
+            CartHolder cartHolder)
         {
             this.windowManager = windowManager;
             this.argipApiData = argipApiData;
             this.settingsData = settingsData;
             this.accessTokenService = accessTokenService;
-
+            this.cartHolder = cartHolder;
 
             ProductList = new BindableCollection<Product>();
 
@@ -310,7 +323,7 @@ namespace ArgipApiWpfConsume.ViewModels
             ProductList.AddRange(dane.Products);
             IsBusy = false;
             ProgressInfo = "OK";
-            // jeśli jest następna strona, to poinformuj
+
             if (!string.IsNullOrEmpty(dane.Pagination.NextPageLink))
             {
                 NextPageUrl = dane.Pagination.NextPageLink;
@@ -325,7 +338,13 @@ namespace ArgipApiWpfConsume.ViewModels
 
         public void AddToCart(Product product)
         {
-            var result = windowManager.ShowDialog(new DialogViewModel(product));
+            dynamic settings = new ExpandoObject();
+            settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            settings.ResizeMode = ResizeMode.NoResize;
+            settings.MinWidth = 300;
+            settings.Title = "Quantity dialog";
+
+            var result = windowManager.ShowDialog(new DialogViewModel(product, cartHolder), null, settings);
         }
         //public void OpenModal()
         //{

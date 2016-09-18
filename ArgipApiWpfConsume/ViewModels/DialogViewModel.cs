@@ -1,4 +1,5 @@
 ﻿using ArgipApiWpfConsume.Models;
+using ArgipApiWpfConsume.Services;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
@@ -11,19 +12,25 @@ namespace ArgipApiWpfConsume.ViewModels
     public class DialogViewModel : Conductor<object>
     {
         private readonly Product product;
+        private readonly CartHolder cartHolder;
         int quantityYouNeed;
         int quantityYouReceive;
         int boxesYouReceive;
-        decimal weightSum;
+        decimal totalWeight;
+        decimal actualPrice;
+        string currencyName;
+        decimal totalValue;
 
-        public DialogViewModel(Product product)
+        public DialogViewModel(Product product, CartHolder cartHolder)
         {
             this.product = product;
+            this.cartHolder = cartHolder;
             if (product.PiecesInStock > 0)
             {
                 BoxesYouReceive = 1;
-                //QuantityYouReceive = product.SinglePackQuantityInPieces;
                 QuantityYouNeed = product.SinglePackQuantityInPieces;
+                ActualPrice = product.YourMainPrice;
+                CurrencyName = product.CurrencyName;
             }
             else
             {
@@ -32,6 +39,37 @@ namespace ArgipApiWpfConsume.ViewModels
             }
         }
 
+
+        public decimal TotalValue
+        {
+            get { return totalValue; }
+            set
+            {
+                totalValue = value;
+                NotifyOfPropertyChange(() => TotalValue);
+            }
+        }
+
+        public decimal ActualPrice
+        {
+            get { return actualPrice; }
+            set
+            {
+                actualPrice = value;
+                NotifyOfPropertyChange(() => ActualPrice);
+                TotalValue = Math.Round(actualPrice * (quantityYouReceive / 100m), 2, MidpointRounding.AwayFromZero);
+            }
+        }
+
+        public string CurrencyName
+        {
+            get { return currencyName; }
+            set
+            {
+                currencyName = value;
+                NotifyOfPropertyChange(() => CurrencyName);
+            }
+        }
 
         public int QuantityYouNeed
         {
@@ -63,13 +101,13 @@ namespace ArgipApiWpfConsume.ViewModels
                         }
                     }
 
-                    WeightSum = Math.Round(product.BoxWeight * BoxesYouReceive, 2);
+                    TotalWeight = Math.Round(product.BoxWeight * BoxesYouReceive, 2, MidpointRounding.AwayFromZero);
                 }
                 else
                 {
                     BoxesYouReceive = 0;
                     QuantityYouReceive = 0;
-                    WeightSum = 0;
+                    TotalWeight = 0;
                 }
 
                 NotifyOfPropertyChange(() => QuantityYouNeed);
@@ -83,6 +121,20 @@ namespace ArgipApiWpfConsume.ViewModels
             {
                 quantityYouReceive = value;
                 NotifyOfPropertyChange(() => QuantityYouReceive);
+
+                ActualPrice = product.YourMainPrice;
+
+                if (product.QuantityLimitLevel1 != 0 && product.YourPriceLevel1 > 0 && quantityYouReceive >= product.QuantityLimitLevel1)
+                {
+                    ActualPrice = product.YourPriceLevel1;
+                }
+
+                if (product.QuantityLimitLevel2 != 0 && product.YourPriceLevel2 > 0 && quantityYouReceive >= product.QuantityLimitLevel2)
+                {
+                    ActualPrice = product.YourPriceLevel2;
+                }
+
+                NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
 
@@ -96,7 +148,7 @@ namespace ArgipApiWpfConsume.ViewModels
                 {
 
                     QuantityYouReceive = boxesYouReceive * product.SinglePackQuantityInPieces;
-                    WeightSum = Math.Round(product.BoxWeight * boxesYouReceive, 2);
+                    TotalWeight = Math.Round(product.BoxWeight * boxesYouReceive, 2);
                 }
                 else
                 {
@@ -108,13 +160,13 @@ namespace ArgipApiWpfConsume.ViewModels
             }
         }
 
-        public decimal WeightSum
+        public decimal TotalWeight
         {
-            get { return weightSum; }
+            get { return totalWeight; }
             set
             {
-                weightSum = value;
-                NotifyOfPropertyChange(() => WeightSum);
+                totalWeight = value;
+                NotifyOfPropertyChange(() => TotalWeight);
             }
         }
 
@@ -125,8 +177,18 @@ namespace ArgipApiWpfConsume.ViewModels
 
         public void BoxesDown()
         {
-            BoxesYouReceive--;
+            if(boxesYouReceive > 0) BoxesYouReceive--;
         }
-        //public BindableCollection<int> Buttons { get; private set; }
+
+        public void AddToCart()
+        {
+            if(QuantityYouReceive > 0) cartHolder.AddItem(new CartItem { ProductId = product.ProductId, QuantityInPieces = QuantityYouReceive });
+            TryClose();
+        }
+
+        public bool CanAddToCart
+        {
+            get { return QuantityYouReceive <= product.PiecesInStock; }
+        }
     }
 }

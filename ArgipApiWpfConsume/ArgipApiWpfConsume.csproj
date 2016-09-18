@@ -122,6 +122,7 @@
     <Compile Include="Models\SettingsModel.cs" />
     <Compile Include="Services\AccessTokenService.cs" />
     <Compile Include="Services\ArgipApiData.cs" />
+    <Compile Include="Services\CartHolder.cs" />
     <Compile Include="Services\IArgipApiData.cs" />
     <Compile Include="Services\ISettingsData.cs" />
     <Compile Include="Services\MySettingsProvider.cs" />

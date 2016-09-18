@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ArgipApiWpfConsume"
         mc:Ignorable="d"
-        Title="Quantity dialog" Height="300" Width="300" WindowStartupLocation="CenterOwner">
+        Height="300" Width="300" WindowStartupLocation="CenterOwner">
     <Grid>
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
@@ -25,9 +25,22 @@
                 <Button x:Name="BoxesDown" x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="20" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                <Label Width="150">Weight</Label>
-                <TextBlock x:Name="WeightSum" Margin="0,5,0,5" />
+                <Label Width="150">Total weight</Label>
+                <TextBlock x:Name="TotalWeight" Margin="0,5,0,5" />
                 <Label> kg</Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Width="150">Actual price</Label>
+                <TextBlock x:Name="ActualPrice" Margin="0,5,0,5" />
+                <Label Content="{Binding CurrencyName}"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <Label Width="150">Total value</Label>
+                <TextBlock x:Name="TotalValue" Margin="0,5,0,5" FontWeight="Bold" />
+                <Label Content="{Binding CurrencyName}" FontWeight="Bold"></Label>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"  Margin="5" HorizontalAlignment="Right">
+                <Button Content="Add to cart" Padding="5,1" x:Name="AddToCart"></Button>
             </StackPanel>
         </StackPanel>
     </Grid>

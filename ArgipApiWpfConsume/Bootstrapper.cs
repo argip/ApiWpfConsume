@@ -28,6 +28,7 @@ namespace ArgipApiWpfConsume
             container.PerRequest<IArgipApiData, ArgipApiData>();
             container.Singleton<ISettingsData, SettingsData>();
             container.Singleton<AccessTokenService>();
+            container.Singleton<CartHolder>();
         }
 
         protected override object GetInstance(Type service, string key)
