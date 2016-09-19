@@ -39,6 +39,7 @@ namespace ArgipApiWpfConsume.ViewModels
         bool isbusy = false;
         string nextpageurl = "";
         string windowTitle = "Api demo app...";
+        string cartItemsInfo = "Cart (0 items)";
 
         public BindableCollection<Product> ProductList
         {
@@ -207,6 +208,16 @@ namespace ArgipApiWpfConsume.ViewModels
             }
         }
 
+        public string CartItemsInfo
+        {
+            get { return cartItemsInfo; }
+            set
+            {
+                cartItemsInfo= value;
+                NotifyOfPropertyChange(() => CartItemsInfo);
+            }
+        }
+
         public bool IsBusy
         {
             get { return isbusy; }
@@ -345,6 +356,7 @@ namespace ArgipApiWpfConsume.ViewModels
             settings.Title = "Quantity dialog";
 
             var result = windowManager.ShowDialog(new DialogViewModel(product, cartHolder), null, settings);
+            CartItemsInfo = string.Format("Cart ({0} items)", cartHolder.CountCart());
         }
         //public void OpenModal()
         //{

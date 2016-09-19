@@ -20,6 +20,11 @@ namespace ArgipApiWpfConsume.Services
             CartItems = new List<CartItem>();
         }
 
+        public int CountCart()
+        {
+            return CartItems.Count();
+        }
+
         public void AddItem(CartItem newitem)
         {
             var itemToCheck = CartItems.FirstOrDefault(r => r.ProductId == newitem.ProductId); 

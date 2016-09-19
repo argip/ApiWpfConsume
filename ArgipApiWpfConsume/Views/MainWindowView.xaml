@@ -131,7 +131,7 @@
                                             </StackPanel>
                                             <StackPanel Width="100" Margin="5">
                                                 <TextBlock Text="Other possible quantity" FontSize="8"></TextBlock>
-                                                <TextBlock Text="{Binding OtherPossibleQuantity, StringFormat={}{0} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
+                                                <TextBlock Text="{Binding OtherPossibleQuantity, StringFormat={}{0:# ### ###} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
                                             </StackPanel>
                                         </WrapPanel>
                                         <StackPanel Orientation="Horizontal"  Margin="5">
@@ -144,7 +144,7 @@
                     </ListBox>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Cart">
+            <TabItem Header="{Binding CartItemsInfo}">
                 
             </TabItem>
             <TabItem Header="Update">
