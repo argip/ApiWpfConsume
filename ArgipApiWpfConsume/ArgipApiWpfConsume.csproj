@@ -115,7 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CalcOrderModel.cs" />
     <Compile Include="Models\MapProduct.cs" />
+    <Compile Include="Models\OrderItem.cs" />
+    <Compile Include="Models\OrderModelItem.cs" />
     <Compile Include="Models\Pagination.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ProductsAndPagination.cs" />

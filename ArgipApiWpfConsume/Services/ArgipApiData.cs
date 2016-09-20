@@ -23,6 +23,29 @@ namespace ArgipApiWpfConsume.Services
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
+        public async Task<DataCalcOrderModel> CalculateOrderAsync(string url, string accessToken, List<OrderItem> orderItems)
+        {
+            string serializedobject = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(orderItems));
+            StringContent content = new StringContent(serializedobject, Encoding.UTF8, "application/json");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            DataCalcOrderModel calculatedOrder = new DataCalcOrderModel();
+
+
+            using (HttpResponseMessage response = await client.PostAsync(new Uri(url), content))
+            {
+                calculatedOrder.StatusCode = response.StatusCode.ToString();
+                calculatedOrder.IntStatusCode = (int)response.StatusCode;
+                if (response.IsSuccessStatusCode)
+                {
+                    calculatedOrder.CalcOrderModel = new CalcOrderModel();
+                    string respcontent = await response.Content.ReadAsStringAsync();
+                    calculatedOrder.CalcOrderModel = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<CalcOrderModel>(respcontent));
+                }
+            }
+
+            return calculatedOrder;
+        }
+
         public async Task<ProductsAndPagination> GetProdutcsAsync(string url, string accessToken)
         {
             ProductsAndPagination data = new ProductsAndPagination();
@@ -49,11 +72,12 @@ namespace ArgipApiWpfConsume.Services
             return data;
         }
 
-        public async Task<string> UpdateProductAsync(string url, MapProduct mapproduct)
+        public async Task<string> UpdateProductAsync(string url, string accessToken, MapProduct mapproduct)
         {
             string statuscode = "";
             string serializedobject = await Task.Factory.StartNew(() => JsonConvert.SerializeObject(mapproduct));
             StringContent content = new StringContent(serializedobject, Encoding.UTF8, "application/json");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             using (HttpResponseMessage response = await client.PutAsync(new Uri(url), content))
             {

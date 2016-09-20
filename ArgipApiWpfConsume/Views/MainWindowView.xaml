@@ -145,7 +145,26 @@
                 </DockPanel>
             </TabItem>
             <TabItem Header="{Binding CartItemsInfo}">
-                
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Label Width="150">Total Net Value</Label>
+                        <TextBlock x:Name="CartTotalNetValue"/>
+                        <TextBlock x:Name="CartCurrencyName" Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Label Width="150">Tax Value</Label>
+                        <TextBlock x:Name="CartTaxValue"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Label Width="150">Total Gross Value</Label>
+                        <TextBlock x:Name="CartTotalGrossValue"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Label Width="150">Total weight</Label>
+                        <TextBlock x:Name="CartTotalWeight"/>
+                        <TextBlock Margin="10,0,0,0">kg</TextBlock>
+                    </StackPanel>
+                </StackPanel>
             </TabItem>
             <TabItem Header="Update">
                 <StackPanel Orientation="Vertical">

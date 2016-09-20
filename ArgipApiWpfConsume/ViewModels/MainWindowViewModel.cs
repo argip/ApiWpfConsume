@@ -41,6 +41,15 @@ namespace ArgipApiWpfConsume.ViewModels
         string windowTitle = "Api demo app...";
         string cartItemsInfo = "Cart (0 items)";
 
+        //cart data
+        decimal cartTotalWeight { get; set; }
+        decimal cartTotalNetValue { get; set; }
+        decimal cartTotalGrossValue { get; set; }
+        decimal cartTaxValue { get; set; }
+        string cartCurrencyName { get; set; }
+        public BindableCollection<OrderModelItem> CartItems { get; private set; }
+
+
         public BindableCollection<Product> ProductList
         {
             get; private set;
@@ -245,6 +254,9 @@ namespace ArgipApiWpfConsume.ViewModels
         public async void SaveCustomData()
         {
             IsBusy = true;
+            ProgressInfo = "Getting access token...";
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+
             ProgressInfo = "Saving data...";
             MapProduct map = new MapProduct
             {
@@ -254,7 +266,7 @@ namespace ArgipApiWpfConsume.ViewModels
                 ProductFullName = CustomName
             };
 
-            string result = await argipApiData.UpdateProductAsync(BaseApiAddress + @"v1/Products", map);
+            string result = await argipApiData.UpdateProductAsync(BaseApiAddress + @"v1/Products",accessToken, map);
             IsBusy = false;
             ProgressInfo = result;
             ClearFields();
@@ -347,7 +359,7 @@ namespace ArgipApiWpfConsume.ViewModels
             NotifyOfPropertyChange(() => ProductList);
         }
 
-        public void AddToCart(Product product)
+        public async void AddToCart(Product product)
         {
             dynamic settings = new ExpandoObject();
             settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -357,19 +369,72 @@ namespace ArgipApiWpfConsume.ViewModels
 
             var result = windowManager.ShowDialog(new DialogViewModel(product, cartHolder), null, settings);
             CartItemsInfo = string.Format("Cart ({0} items)", cartHolder.CountCart());
+
+            //calculating order
+
+            IsBusy = true;
+            ProgressInfo = "Getting access token...";
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+            ProgressInfo = "Calculating cart...";
+            List<OrderItem> orderItems = cartHolder.ListCartItems().Select(x => new OrderItem { ProductId = x.ProductId, QuantityInPieces = x.QuantityInPieces }).ToList();
+            var dane = await argipApiData.CalculateOrderAsync(BaseApiAddress + @"v1/Order/Calculate", accessToken, orderItems);
+            ProgressInfo = dane.StatusCode;
+
+            CartTotalWeight = dane.CalcOrderModel.TotalWeight;
+            CartTotalNetValue = dane.CalcOrderModel.TotalNetValue;
+            CartTotalGrossValue = dane.CalcOrderModel.TotalGrossValue;
+            CartTaxValue = dane.CalcOrderModel.TaxValue;
+            CartCurrencyName = dane.CalcOrderModel.CurrencyName;
         }
-        //public void OpenModal()
-        //{
-        //    var result = windowManager.ShowDialog(new DialogViewModel(10));
-        //}
 
-        //public void OpenPopup()
-        //{
-        //    dynamic settings = new System.Dynamic.ExpandoObject();
-        //    settings.Var1 = "aaaaa";
-        //    //settings.PlacementTarget = GetView(null);
+        public decimal CartTotalWeight
+        {
+            get { return cartTotalWeight; }
+            set
+            {
+                cartTotalWeight = value;
+                NotifyOfPropertyChange(() => CartTotalWeight);
+            }
+        }
 
-        //    windowManager.ShowPopup(new DialogViewModel(), "Popup", settings);
-        //}
+        public decimal CartTotalNetValue
+        {
+            get { return cartTotalNetValue; }
+            set
+            {
+                cartTotalNetValue = value;
+                NotifyOfPropertyChange(() => CartTotalNetValue);
+            }
+        }
+
+        public decimal CartTotalGrossValue
+        {
+            get { return cartTotalGrossValue; }
+            set
+            {
+                cartTotalGrossValue = value;
+                NotifyOfPropertyChange(() => CartTotalGrossValue);
+            }
+        }
+
+        public decimal CartTaxValue
+        {
+            get { return cartTaxValue; }
+            set
+            {
+                cartTaxValue = value;
+                NotifyOfPropertyChange(() => CartTaxValue);
+            }
+        }
+
+        public string CartCurrencyName
+        {
+            get { return cartCurrencyName; }
+            set
+            {
+                cartCurrencyName = value;
+                NotifyOfPropertyChange(() => CartCurrencyName);
+            }
+        }
     }
 }
