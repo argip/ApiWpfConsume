@@ -164,6 +164,10 @@
                         <TextBlock x:Name="CartTotalWeight"/>
                         <TextBlock Margin="10,0,0,0">kg</TextBlock>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                        <Label Width="150"></Label>
+                        <Button x:Name="CleanCart" Content="Clear cart"></Button>
+                    </StackPanel>                    
                 </StackPanel>
             </TabItem>
             <TabItem Header="Update">

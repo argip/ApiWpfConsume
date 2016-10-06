@@ -341,7 +341,7 @@ namespace ArgipApiWpfConsume.ViewModels
             ProgressInfo = "Getting access token...";
             string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
             ProgressInfo = "Getting data...";
-            var dane = await argipApiData.GetProdutcsAsync(NextPageUrl + FilterQueryString, accessToken);
+            var dane = await argipApiData.GetProdutcsAsync(NextPageUrl, accessToken);
 
             ProductList.AddRange(dane.Products);
             IsBusy = false;
@@ -385,6 +385,18 @@ namespace ArgipApiWpfConsume.ViewModels
             CartTotalGrossValue = dane.CalcOrderModel.TotalGrossValue;
             CartTaxValue = dane.CalcOrderModel.TaxValue;
             CartCurrencyName = dane.CalcOrderModel.CurrencyName;
+            
+        }
+
+        public void CleanCart()
+        {
+            cartHolder.CleanCart();
+
+            CartTotalWeight = 0;
+            CartTotalNetValue = 0;
+            CartTotalGrossValue = 0;
+            CartTaxValue = 0;
+            CartItemsInfo = string.Format("Cart ({0} items)", 0);
         }
 
         public decimal CartTotalWeight
