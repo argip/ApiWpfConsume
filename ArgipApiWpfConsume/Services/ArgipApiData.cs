@@ -72,6 +72,24 @@ namespace ArgipApiWpfConsume.Services
             return data;
         }
 
+        public async Task<Product> GetProductAsync(string url, string accessToken)
+        {
+            Product data = new Product();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            using (HttpResponseMessage response = await client.GetAsync(new Uri(url)))
+            {
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    data = await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<Product>(content));
+                }
+            }
+
+            return data;
+        }
+
         public async Task<string> UpdateProductAsync(string url, string accessToken, MapProduct mapproduct)
         {
             string statuscode = "";

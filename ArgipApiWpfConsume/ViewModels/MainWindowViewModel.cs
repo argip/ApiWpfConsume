@@ -55,6 +55,12 @@ namespace ArgipApiWpfConsume.ViewModels
             get; private set;
         }
 
+
+        public BindableCollection<Product> ProductCustomIndex
+        {
+            get; private set;
+        }
+
         public string TotalRecords
         {
             get { return string.Format("{0} records", ProductList.Count); }
@@ -79,6 +85,7 @@ namespace ArgipApiWpfConsume.ViewModels
             this.cartHolder = cartHolder;
 
             ProductList = new BindableCollection<Product>();
+            ProductCustomIndex = new BindableCollection<Product>();
 
             // read settings from store
             var settings = settingsData.ReadSettings();
@@ -302,6 +309,34 @@ namespace ArgipApiWpfConsume.ViewModels
                 await FilterData();
             }
 
+        }
+
+        private string findIndexText;
+
+        public string FindIndexText
+        {
+            get { return findIndexText; }
+            set
+            {
+                findIndexText = value;
+                NotifyOfPropertyChange(() => FindIndexText);
+            }
+        }
+
+
+
+        public async Task FindData()
+        {
+            IsBusy = true;
+            ProductCustomIndex.Clear();
+            ProgressInfo = "Getting access token...";
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+            ProgressInfo = "Getting data...";
+            var dane = await argipApiData.GetProductAsync(BaseApiAddress + @"/v1/Products/YourIndex/" + FindIndexText, accessToken);
+            ProductCustomIndex.Add(dane);
+            IsBusy = false;
+            ProgressInfo = "OK";
+            NotifyOfPropertyChange(() => ProductCustomIndex);
         }
 
         public async Task FilterData()

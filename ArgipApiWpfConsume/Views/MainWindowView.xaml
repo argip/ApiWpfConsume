@@ -4,228 +4,242 @@
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:ArgipApiWpfConsume"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:cal="http://www.caliburnproject.org" 
+		xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+		xmlns:cal="http://www.caliburnproject.org" 
 		mc:Ignorable="d"
 		Title="{Binding WindowTitle}" Height="492.857" Width="840.587">
-    <Window.Resources>
-        <Style x:Key="txtStockInfo" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="Green"/>
-            <Setter Property="Text" Value="{Binding Path=PiecesInStock, StringFormat={}{0:# ###} PCS}"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=PiecesInStock}" Value="0">
-                    <Setter Property="Foreground" Value="Red"/>
-                    <Setter Property="Text" Value="OUT OF STOCK"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="brdPriceInfo1" TargetType="Border">
-            <Setter Property="Visibility" Value="Visible"></Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=QuantityLimitLevel1}" Value="0">
-                    <Setter Property="Visibility" Value="Hidden"></Setter>
-                </DataTrigger>
-            </Style.Triggers>            
-        </Style>
-        <Style x:Key="brdPriceInfo2" TargetType="Border">
-            <Setter Property="Visibility" Value="Visible"></Setter>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Path=QuantityLimitLevel2}" Value="0">
-                    <Setter Property="Visibility" Value="Hidden"></Setter>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Window.Resources>
-        <DockPanel>
-        <StackPanel DockPanel.Dock="Bottom" Background="LightGray">
-            <TextBlock x:Name="ProgressInfo" Height="20" Margin="5" ></TextBlock>
-        </StackPanel>
-        <TabControl DockPanel.Dock="Top">
-            <TabItem Header="General">
-                <TextBlock TextWrapping="Wrap" Text="Please visit Settings Tab first and setup your credentials. This demo shows server to server communication flow (no login form)" Margin="10" />
-            </TabItem>
-            <TabItem Header="Searching data">
-                <DockPanel>
-                    <StackPanel Orientation="Horizontal"  Margin="5" DockPanel.Dock="Top">
-                        <TextBox x:Name="FilterText" Width="300" FontSize="20" Padding="5">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="KeyDown">
-                                    <cal:ActionMessage MethodName="DoFilterData">
-                                        <cal:Parameter Value="$executionContext"/>
-                                    </cal:ActionMessage>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                        </TextBox>
-                        <Button x:Name="FilterData" Content="Filter data" FontSize="20" Margin="5,0,0,0" Padding="5"/>
-                        <Button x:Name="NextPage" Content="Next page" FontSize="20" Margin="5,0,0,0" Padding="5"/>
-                        <Label x:Name="TotalRecords" FontSize="20" Margin="5,0,0,0" Padding="5"></Label>
-                    </StackPanel>
-                    <ListBox x:Name="ProductList" HorizontalContentAlignment="Stretch" DockPanel.Dock="Bottom">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Background="LightGray">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="180"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Margin="5">
-                                    <Border Margin="5" BorderBrush="Black" BorderThickness="1">
-                                        <Image Source="{Binding Path=PictureUrl}" Stretch="Fill"/>
-                                    </Border>
-                                        <StackPanel Margin="5">
-                                        <TextBlock Text="Stock Info" FontSize="8"></TextBlock>
-                                        <TextBlock Style="{StaticResource txtStockInfo}" FontSize="20" FontWeight="Bold" Padding="0"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1" Margin="5" Background="LightGray">
-                                        <StackPanel Orientation="Horizontal" TextBlock.FontWeight="Bold" >
-                                            <TextBlock Text="{Binding ProductFullName}" FontSize="16" />
-                                        </StackPanel>
-                                        <WrapPanel>
-                                        <Label Content="Product ID:" FontSize="8"></Label>
-                                        <Label Content="{Binding ProductId}" FontSize="8"></Label>
-                                        </WrapPanel>
-                                        <WrapPanel>
-                                            <Label Content="Your custom index:" FontSize="8"></Label>
-                                            <Label Content="{Binding YourIndex}" FontSize="8"></Label>
-                                        </WrapPanel>
-                                        <WrapPanel>
-                                            <Border Padding="5" BorderBrush="SteelBlue" BorderThickness="1" Margin="0,0,20,0">
-                                            <StackPanel Width="120">
-                                                <Label Content="Main Price:" FontSize="8" Padding="5,0,0,0"></Label>
-                                                <WrapPanel>
-                                                    <TextBlock Text="{Binding YourMainPrice}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
-                                                    <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
-                                                </WrapPanel>
-                                            </StackPanel>
-                                            </Border>
-                                            <Border Padding="5" BorderBrush="#FFB4A546" BorderThickness="1" Margin="0,0,20,0" Style="{StaticResource brdPriceInfo1}">
-                                                <StackPanel Width="120">
-                                                    <Label Content="Price Level 1:" FontSize="8" Padding="5,0,0,0"></Label>
-                                                    <WrapPanel>
-                                                        <TextBlock Text="{Binding YourPriceLevel1}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
-                                                        <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
-                                                    </WrapPanel>
-                                                    <TextBlock Text="{Binding QuantityLimitLevel1, StringFormat={}For {0} PCS}" FontSize="8" />
-                                                </StackPanel>
-                                            </Border>
-                                            <Border Padding="5" BorderBrush="#FF50B446" BorderThickness="1" Margin="0,0,20,0" Style="{StaticResource brdPriceInfo2}">
-                                                <StackPanel Width="120">
-                                                    <Label Content="Price Level 2:" FontSize="8" Padding="5,0,0,0"></Label>
-                                                    <WrapPanel>
-                                                        <TextBlock Text="{Binding YourPriceLevel2}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
-                                                        <TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
-                                                    </WrapPanel>
-                                                    <TextBlock Text="{Binding QuantityLimitLevel2, StringFormat={}For {0} PCS}" FontSize="8" />
-                                                </StackPanel>
-                                            </Border>
-                                        </WrapPanel>
-                                        <WrapPanel>
-                                            <StackPanel Width="100" Margin="5">
-                                                <TextBlock Text="Box quantity" FontSize="8"></TextBlock>
-                                                <TextBlock Text="{Binding SinglePackQuantityInPieces, StringFormat={}{0} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
-                                            </StackPanel>
-                                            <StackPanel Width="100" Margin="5">
-                                                <TextBlock Text="Box weight" FontSize="8"></TextBlock>
-                                                <TextBlock Text="{Binding BoxWeight, StringFormat={}{0:N2} kg}" FontSize="12" FontWeight="Bold" Padding="0"/>
-                                            </StackPanel>
-                                            <StackPanel Width="100" Margin="5">
-                                                <TextBlock Text="Other possible quantity" FontSize="8"></TextBlock>
-                                                <TextBlock Text="{Binding OtherPossibleQuantity, StringFormat={}{0:# ### ###} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
-                                            </StackPanel>
-                                        </WrapPanel>
-                                        <StackPanel Orientation="Horizontal"  Margin="5">
-                                            <Button HorizontalAlignment="Right" Content="Add to cart" cal:Message.Attach="AddToCart($dataContext)" Padding="5,1" ></Button>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
+	<Window.Resources>
+		<Style x:Key="txtStockInfo" TargetType="TextBlock">
+			<Setter Property="Foreground" Value="Green"/>
+			<Setter Property="Text" Value="{Binding Path=PiecesInStock, StringFormat={}{0:# ###} PCS}"/>
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Path=PiecesInStock}" Value="0">
+					<Setter Property="Foreground" Value="Red"/>
+					<Setter Property="Text" Value="OUT OF STOCK"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+		<Style x:Key="brdPriceInfo1" TargetType="Border">
+			<Setter Property="Visibility" Value="Visible"></Setter>
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Path=QuantityLimitLevel1}" Value="0">
+					<Setter Property="Visibility" Value="Hidden"></Setter>
+				</DataTrigger>
+			</Style.Triggers>            
+		</Style>
+		<Style x:Key="brdPriceInfo2" TargetType="Border">
+			<Setter Property="Visibility" Value="Visible"></Setter>
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding Path=QuantityLimitLevel2}" Value="0">
+					<Setter Property="Visibility" Value="Hidden"></Setter>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+		<DataTemplate x:Key = "productDetails">
+			<Grid Background="LightGray">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="180"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Grid.Column="0" Margin="5">
+					<Border Margin="5" BorderBrush="Black" BorderThickness="1">
+						<Image Source="{Binding Path=PictureUrl}" Stretch="Fill"/>
+					</Border>
+					<StackPanel Margin="5">
+						<TextBlock Text="Stock Info" FontSize="8"></TextBlock>
+						<TextBlock Style="{StaticResource txtStockInfo}" FontSize="20" FontWeight="Bold" Padding="0"/>
+					</StackPanel>
+				</StackPanel>
+				<StackPanel Grid.Column="1" Margin="5" Background="LightGray">
+					<StackPanel Orientation="Horizontal" TextBlock.FontWeight="Bold" >
+						<TextBlock Text="{Binding ProductFullName}" FontSize="16" />
+					</StackPanel>
+					<WrapPanel>
+						<Label Content="Product ID:" FontSize="8" Padding="0,1,10,1"></Label>
+						<Label Content="{Binding ProductId}" FontSize="8" Padding="0,1"></Label>
+					</WrapPanel>
+					<WrapPanel>
+						<Label Content="Argip part number:" FontSize="8" Padding="0,1,10,1"></Label>
+						<Label Content="{Binding Index}" FontSize="8" Padding="0,1"></Label>
+					</WrapPanel>
+					<WrapPanel>
+						<Label Content="Your custom index:" FontSize="8" Padding="0,1,10,1"></Label>
+						<Label Content="{Binding YourIndex}" FontSize="8" Padding="0,1"></Label>
+					</WrapPanel>
+					<WrapPanel>
+						<Border Padding="5" BorderBrush="SteelBlue" BorderThickness="1" Margin="0,0,20,0">
+							<StackPanel Width="120">
+								<Label Content="Main Price:" FontSize="8" Padding="5,0,0,0"></Label>
+								<WrapPanel>
+									<TextBlock Text="{Binding YourMainPrice}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+									<TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+								</WrapPanel>
+							</StackPanel>
+						</Border>
+						<Border Padding="5" BorderBrush="#FFB4A546" BorderThickness="1" Margin="0,0,20,0" Style="{StaticResource brdPriceInfo1}">
+							<StackPanel Width="120">
+								<Label Content="Price Level 1:" FontSize="8" Padding="5,0,0,0"></Label>
+								<WrapPanel>
+									<TextBlock Text="{Binding YourPriceLevel1}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+									<TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+								</WrapPanel>
+								<TextBlock Text="{Binding QuantityLimitLevel1, StringFormat={}For {0} PCS}" FontSize="8" />
+							</StackPanel>
+						</Border>
+						<Border Padding="5" BorderBrush="#FF50B446" BorderThickness="1" Margin="0,0,20,0" Style="{StaticResource brdPriceInfo2}">
+							<StackPanel Width="120">
+								<Label Content="Price Level 2:" FontSize="8" Padding="5,0,0,0"></Label>
+								<WrapPanel>
+									<TextBlock Text="{Binding YourPriceLevel2}" FontSize="20" FontWeight="Bold" Padding="0,0,5,0"/>
+									<TextBlock Text="{Binding CurrencyName}" FontSize="12" VerticalAlignment="Center"/>
+								</WrapPanel>
+								<TextBlock Text="{Binding QuantityLimitLevel2, StringFormat={}For {0} PCS}" FontSize="8" />
+							</StackPanel>
+						</Border>
+					</WrapPanel>
+					<WrapPanel>
+						<StackPanel Width="100" Margin="5">
+							<TextBlock Text="Box quantity" FontSize="8"></TextBlock>
+							<TextBlock Text="{Binding SinglePackQuantityInPieces, StringFormat={}{0} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
+						</StackPanel>
+						<StackPanel Width="100" Margin="5">
+							<TextBlock Text="Box weight" FontSize="8"></TextBlock>
+							<TextBlock Text="{Binding BoxWeight, StringFormat={}{0:N2} kg}" FontSize="12" FontWeight="Bold" Padding="0"/>
+						</StackPanel>
+						<StackPanel Width="100" Margin="5">
+							<TextBlock Text="Other possible quantity" FontSize="8"></TextBlock>
+							<TextBlock Text="{Binding OtherPossibleQuantity, StringFormat={}{0:# ### ###} PCS}" FontSize="12" FontWeight="Bold" Padding="0"/>
+						</StackPanel>
+					</WrapPanel>
+					<StackPanel Orientation="Horizontal"  Margin="5">
+						<Button HorizontalAlignment="Right" Content="Add to cart" cal:Message.Attach="AddToCart($dataContext)" Padding="5,1" ></Button>
+					</StackPanel>
+				</StackPanel>
+			</Grid>
+		</DataTemplate>
+	</Window.Resources>
+		<DockPanel>
+		<StackPanel DockPanel.Dock="Bottom" Background="LightGray">
+			<TextBlock x:Name="ProgressInfo" Height="20" Margin="5" ></TextBlock>
+		</StackPanel>
+		<TabControl DockPanel.Dock="Top">
+			<TabItem Header="General">
+				<TextBlock TextWrapping="Wrap" Text="Please visit Settings Tab first and setup your credentials. This demo shows server to server communication flow (no login form)" Margin="10" />
+			</TabItem>
+			<TabItem Header="Searching data">
+				<DockPanel>
+					<StackPanel Orientation="Horizontal"  Margin="5" DockPanel.Dock="Top">
+						<TextBox x:Name="FilterText" Width="300" FontSize="20" Padding="5">
+							<i:Interaction.Triggers>
+								<i:EventTrigger EventName="KeyDown">
+									<cal:ActionMessage MethodName="DoFilterData">
+										<cal:Parameter Value="$executionContext"/>
+									</cal:ActionMessage>
+								</i:EventTrigger>
+							</i:Interaction.Triggers>
+						</TextBox>
+						<Button x:Name="FilterData" Content="Filter data" FontSize="20" Margin="5,0,0,0" Padding="5"/>
+						<Button x:Name="NextPage" Content="Next page" FontSize="20" Margin="5,0,0,0" Padding="5"/>
+						<Label x:Name="TotalRecords" FontSize="20" Margin="5,0,0,0" Padding="5"></Label>
+					</StackPanel>
+                    <ListBox x:Name="ProductList" HorizontalContentAlignment="Stretch" DockPanel.Dock="Bottom" ItemTemplate="{StaticResource productDetails}">
                     </ListBox>
-                </DockPanel>
-            </TabItem>
-            <TabItem Header="{Binding CartItemsInfo}">
-                <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">Total Net Value</Label>
-                        <TextBlock x:Name="CartTotalNetValue"/>
-                        <TextBlock x:Name="CartCurrencyName" Margin="10,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">Tax Value</Label>
-                        <TextBlock x:Name="CartTaxValue"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">Total Gross Value</Label>
-                        <TextBlock x:Name="CartTotalGrossValue"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">Total weight</Label>
-                        <TextBlock x:Name="CartTotalWeight"/>
-                        <TextBlock Margin="10,0,0,0">kg</TextBlock>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150"></Label>
-                        <Button x:Name="CleanCart" Content="Clear cart"></Button>
-                    </StackPanel>                    
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Update">
-                <StackPanel Orientation="Vertical">
-                    <TextBlock TextWrapping="Wrap" Text="You can add extra information to particular product eg. custom index, full name or ean barcode. Than You can use that information for searching records." Margin="10" />
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">Product ID</Label>
-                        <TextBox Width="100" x:Name="ProductIdForUpdate"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">My custome index</Label>
-                        <TextBox Width="200" x:Name="CustomIndex"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">My custome name</Label>
-                        <TextBox x:Name="CustomName" Width="400"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150">My custome EAN</Label>
-                        <TextBox x:Name="CustomEan" Width="200"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150"></Label>
-                        <Button x:Name="SaveCustomData" Content="Save"></Button>
-                    </StackPanel>
-                </StackPanel>
-            </TabItem>
-            <TabItem Header="Settings">
-                <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Width="150">Client ID</Label>
-                        <TextBox x:Name="ClientId" Width="400"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Width="150">Client secret</Label>
-                    <TextBox x:Name="ClientSecret" Width="400"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Width="150">Audience</Label>
-                    <TextBox x:Name="Audience" Width="400"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Width="150">Token endpoint</Label>
-                    <TextBox x:Name="TokenEndpoint" Width="400"/>
-                </StackPanel>
+				</DockPanel>
+			</TabItem>
+			<TabItem Header="Find by custom index">
+				<DockPanel>
+					<StackPanel Orientation="Horizontal"  Margin="5" DockPanel.Dock="Top">
+						<TextBox x:Name="FindIndexText" Width="300" FontSize="20" Padding="5">
+						</TextBox>
+						<Button x:Name="FindData" Content="Find data" FontSize="20" Margin="5,0,0,0" Padding="5"/>
+						<Label x:Name="FindInfo" FontSize="20" Margin="5,0,0,0" Padding="5"></Label>
+					</StackPanel>
+                    <ListBox x:Name="ProductCustomIndex" HorizontalContentAlignment="Stretch" DockPanel.Dock="Bottom" ItemTemplate="{StaticResource productDetails}">
+                    </ListBox>
+				</DockPanel>
+			</TabItem>
+			<TabItem Header="{Binding CartItemsInfo}">
+				<StackPanel Orientation="Vertical">
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">Total Net Value</Label>
+						<TextBlock x:Name="CartTotalNetValue"/>
+						<TextBlock x:Name="CartCurrencyName" Margin="10,0,0,0"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">Tax Value</Label>
+						<TextBlock x:Name="CartTaxValue"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">Total Gross Value</Label>
+						<TextBlock x:Name="CartTotalGrossValue"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">Total weight</Label>
+						<TextBlock x:Name="CartTotalWeight"/>
+						<TextBlock Margin="10,0,0,0">kg</TextBlock>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150"></Label>
+						<Button x:Name="CleanCart" Content="Clear cart"></Button>
+					</StackPanel>                    
+				</StackPanel>
+			</TabItem>
+			<TabItem Header="Update">
+				<StackPanel Orientation="Vertical">
+					<TextBlock TextWrapping="Wrap" Text="You can add extra information to particular product eg. custom index, full name or ean barcode. Than You can use that information for searching records." Margin="10" />
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">Product ID</Label>
+						<TextBox Width="100" x:Name="ProductIdForUpdate"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">My custome index</Label>
+						<TextBox Width="200" x:Name="CustomIndex"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">My custome name</Label>
+						<TextBox x:Name="CustomName" Width="400"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150">My custome EAN</Label>
+						<TextBox x:Name="CustomEan" Width="200"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150"></Label>
+						<Button x:Name="SaveCustomData" Content="Save"></Button>
+					</StackPanel>
+				</StackPanel>
+			</TabItem>
+			<TabItem Header="Settings">
+				<StackPanel Orientation="Vertical">
+				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+					<Label Width="150">Client ID</Label>
+						<TextBox x:Name="ClientId" Width="400"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+					<Label Width="150">Client secret</Label>
+					<TextBox x:Name="ClientSecret" Width="400"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+					<Label Width="150">Audience</Label>
+					<TextBox x:Name="Audience" Width="400"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+					<Label Width="150">Token endpoint</Label>
+					<TextBox x:Name="TokenEndpoint" Width="400"/>
+				</StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                    <Label Width="150">Base API address</Label>
-                    <TextBox x:Name="BaseApiAddress" Width="400"/>
-                </StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+					<Label Width="150">Base API address</Label>
+					<TextBox x:Name="BaseApiAddress" Width="400"/>
+				</StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                        <Label Width="150"></Label>
-                        <Button x:Name="SaveSettingsData" Content="Save"></Button>
-                    </StackPanel>
-                    </StackPanel>
-            </TabItem>
-        </TabControl>
-    </DockPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+						<Label Width="150"></Label>
+						<Button x:Name="SaveSettingsData" Content="Save"></Button>
+					</StackPanel>
+					</StackPanel>
+			</TabItem>
+		</TabControl>
+	</DockPanel>
 
 </Window>
