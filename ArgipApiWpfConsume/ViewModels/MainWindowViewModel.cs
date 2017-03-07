@@ -66,6 +66,20 @@ namespace ArgipApiWpfConsume.ViewModels
             get { return string.Format("{0} records", ProductList.Count); }
         }
 
+        //public string FindInfo
+        private string findInfo;
+
+        public string FindInfo
+        {
+            get { return findInfo; }
+            set
+            {
+                findInfo = value;
+                NotifyOfPropertyChange(() => FindInfo);
+            }
+        }
+
+
         public string WindowTitle
         {
             get { return windowTitle; }
@@ -329,11 +343,13 @@ namespace ArgipApiWpfConsume.ViewModels
         {
             IsBusy = true;
             ProductCustomIndex.Clear();
+            FindInfo = "";
             ProgressInfo = "Getting access token...";
             string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
             ProgressInfo = "Getting data...";
             var dane = await argipApiData.GetProductAsync(BaseApiAddress + @"/v1/Products/YourIndex/" + FindIndexText, accessToken);
-            ProductCustomIndex.Add(dane);
+            if (dane != null) ProductCustomIndex.Add(dane);
+            else FindInfo = "No product found.";
             IsBusy = false;
             ProgressInfo = "OK";
             NotifyOfPropertyChange(() => ProductCustomIndex);

@@ -74,7 +74,7 @@ namespace ArgipApiWpfConsume.Services
 
         public async Task<Product> GetProductAsync(string url, string accessToken)
         {
-            Product data = new Product();
+            Product data = null;
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
             using (HttpResponseMessage response = await client.GetAsync(new Uri(url)))
