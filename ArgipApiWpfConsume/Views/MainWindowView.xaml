@@ -219,10 +219,7 @@
 					<Label Width="150">Client secret</Label>
 					<TextBox x:Name="ClientSecret" Width="400"/>
 				</StackPanel>
-				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-					<Label Width="150">Audience</Label>
-					<TextBox x:Name="Audience" Width="400"/>
-				</StackPanel>
+
 				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
 					<Label Width="150">Token endpoint</Label>
 					<TextBox x:Name="TokenEndpoint" Width="400"/>

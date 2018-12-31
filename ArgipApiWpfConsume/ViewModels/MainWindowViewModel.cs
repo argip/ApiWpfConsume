@@ -23,7 +23,6 @@ namespace ArgipApiWpfConsume.ViewModels
         readonly CartHolder cartHolder;
 
         //settings
-        string audience;
         string tokenendpoint { get; set; }
         string baseapiaddress { get; set; }
         string clientid { get; set; }
@@ -103,7 +102,6 @@ namespace ArgipApiWpfConsume.ViewModels
 
             // read settings from store
             var settings = settingsData.ReadSettings();
-            Audience = settings.Audience;
             BaseApiAddress = settings.BaseApiAddress;
             TokenEndpoint = settings.TokenEndpoint;
             ClientId = settings.ClientId;
@@ -111,15 +109,6 @@ namespace ArgipApiWpfConsume.ViewModels
         }
 
 
-        public string Audience
-        {
-            get { return audience; }
-            set
-            {
-                audience = value;
-                NotifyOfPropertyChange(() => Audience);
-            }
-        }
         public string TokenEndpoint
         {
             get { return tokenendpoint; }
@@ -276,7 +265,7 @@ namespace ArgipApiWpfConsume.ViewModels
         {
             IsBusy = true;
             ProgressInfo = "Getting access token...";
-            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, TokenEndpoint);
 
             ProgressInfo = "Saving data...";
             MapProduct map = new MapProduct
@@ -308,7 +297,6 @@ namespace ArgipApiWpfConsume.ViewModels
             {
                 ClientId = ClientId,
                 ClientSecret = ClientSecret,
-                Audience = Audience,
                 BaseApiAddress = BaseApiAddress,
                 TokenEndpoint = TokenEndpoint
             });
@@ -345,7 +333,7 @@ namespace ArgipApiWpfConsume.ViewModels
             ProductCustomIndex.Clear();
             FindInfo = "";
             ProgressInfo = "Getting access token...";
-            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, TokenEndpoint);
             ProgressInfo = "Getting data...";
             var dane = await argipApiData.GetProductAsync(BaseApiAddress + @"/v1/Products/YourIndex/" + FindIndexText, accessToken);
             if (dane != null) ProductCustomIndex.Add(dane);
@@ -362,7 +350,7 @@ namespace ArgipApiWpfConsume.ViewModels
             NextPageUrl = "";
             ProductList.Clear();
             ProgressInfo = "Getting access token...";
-            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, TokenEndpoint);
             ProgressInfo = "Getting data...";
             var dane = await argipApiData.GetProdutcsAsync(BaseApiAddress + @"v1/Products/0/200/true" + FilterQueryString, accessToken);
             ProductList.AddRange(dane.Products);
@@ -390,7 +378,7 @@ namespace ArgipApiWpfConsume.ViewModels
         {
             IsBusy = true;
             ProgressInfo = "Getting access token...";
-            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, TokenEndpoint);
             ProgressInfo = "Getting data...";
             var dane = await argipApiData.GetProdutcsAsync(NextPageUrl, accessToken);
 
@@ -425,7 +413,7 @@ namespace ArgipApiWpfConsume.ViewModels
 
             IsBusy = true;
             ProgressInfo = "Getting access token...";
-            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, Audience, TokenEndpoint);
+            string accessToken = await accessTokenService.GetAccessTokenAsync(ClientId, ClientSecret, TokenEndpoint);
             ProgressInfo = "Calculating cart...";
             List<OrderItem> orderItems = cartHolder.ListCartItems().Select(x => new OrderItem { ProductId = x.ProductId, QuantityInPieces = x.QuantityInPieces }).ToList();
             var dane = await argipApiData.CalculateOrderAsync(BaseApiAddress + @"v1/Order/Calculate", accessToken, orderItems);

@@ -9,19 +9,6 @@ namespace ArgipApiWpfConsume.Services
 
     public class MySettingsProvider : ApplicationSettingsBase
     {
-        [UserScopedSetting()]
-        [DefaultSettingValue(@"https://argipapi.argip.com.pl")]
-        public string Audience
-        {
-            get
-            {
-                return ((string)this["Audience"]);
-            }
-            set
-            {
-                this["Audience"] = value;
-            }
-        }
 
         [UserScopedSetting()]
         [DefaultSettingValue(@"https://identityserver.argip.com.pl/connect/token")]

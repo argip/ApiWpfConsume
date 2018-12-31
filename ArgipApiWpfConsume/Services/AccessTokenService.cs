@@ -51,7 +51,7 @@ namespace ArgipApiWpfConsume.Services
             return (long)timeSpan.TotalSeconds;
         }
 
-        public async Task<string> GetAccessTokenAsync(string clientId, string clientSecret, string audience, string tokenEndpoint)
+        public async Task<string> GetAccessTokenAsync(string clientId, string clientSecret, string tokenEndpoint)
         {
 
             if (expiration <= UnixTimeNow())
@@ -67,12 +67,11 @@ namespace ArgipApiWpfConsume.Services
                 CancellationToken cancellationToken = default(CancellationToken);
 
                 var fields = new Dictionary<string, string>
-            {
-              { "grant_type", "client_credentials" },
-              { "audience", audience },
-              { "client_id", clientId },
-              { "client_secret", clientSecret }
-            };
+                {
+                    { "grant_type", "client_credentials" },
+                    { "client_id", clientId },
+                    { "client_secret", clientSecret }
+                };
 
 
                 var response = await _client.PostAsync(string.Empty, new FormUrlEncodedContent(fields), cancellationToken).ConfigureAwait(false);
@@ -80,8 +79,8 @@ namespace ArgipApiWpfConsume.Services
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    TokenResponse _response = JsonConvert.DeserializeObject<TokenResponse>(content);
-                    TokenPayloadData _tokenpayloaddata = DecodeJWT(_response.access_token);
+                    var _response = JsonConvert.DeserializeObject<TokenResponse>(content);
+                    var _tokenpayloaddata = DecodeJWT(_response.access_token);
 
                     token = _response.access_token;
                     expiration = _tokenpayloaddata.exp;

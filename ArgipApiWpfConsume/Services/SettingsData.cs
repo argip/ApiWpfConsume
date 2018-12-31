@@ -13,7 +13,6 @@ namespace ArgipApiWpfConsume.Services
             MySettingsProvider provider = new MySettingsProvider();
 
             //save data to store
-            provider.Audience = settingsModel.Audience;
             provider.BaseApiAddress = settingsModel.BaseApiAddress;
             provider.ClientId = settingsModel.ClientId;
             provider.ClientSecret = settingsModel.ClientSecret;
@@ -26,7 +25,6 @@ namespace ArgipApiWpfConsume.Services
         {
             MySettingsProvider provider = new MySettingsProvider();
             return new SettingsModel {
-                Audience = provider.Audience,
                 BaseApiAddress = provider.BaseApiAddress,
                 ClientId = provider.ClientId,
                 ClientSecret = provider.ClientSecret,
